@@ -1,0 +1,78 @@
+{
+    "name": "nikfedorov/auto-login",
+    "description": "Auto-login middleware for Laravel — logs in the first database user in allowed environments during development.",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "auto-login",
+        "middleware",
+        "development"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nik Fedorov",
+            "email": "neudor@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/nikfedorov/auto-login/issues",
+        "source": "https://github.com/nikfedorov/auto-login"
+    },
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0 || ^12.0 || ^13.0"
+    },
+    "require-dev": {
+        "driftingly/rector-laravel": "^2.0",
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-type-coverage": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nikfedorov\\AutoLogin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "pest --type-coverage --min=100 --compact",
+            "@lint",
+            "phpstan --memory-limit=512M"
+        ],
+        "lint": [
+            "pint --format agent",
+            "rector --output-format=json"
+        ],
+        "test:ci": [
+            "pest --type-coverage --min=100 --compact",
+            "pint --test --format agent",
+            "rector --dry-run",
+            "phpstan --memory-limit=512M"
+        ]
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "pestphp/pest-plugin-type-coverage": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nikfedorov\\AutoLogin\\Providers\\AutoLoginServiceProvider"
+            ]
+        }
+    }
+}

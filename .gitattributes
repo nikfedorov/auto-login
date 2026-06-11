@@ -1,0 +1,8 @@
+# Export-ignore dev files (not needed in production)
+/tests          export-ignore
+/phpstan.neon   export-ignore
+/rector.php     export-ignore
+/phpunit.xml    export-ignore
+/.gitignore     export-ignore
+/.gitattributes export-ignore
+/.github        export-ignore
