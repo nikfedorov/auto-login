@@ -37,7 +37,9 @@ class AutoLoginLocal
             $userModel = Config::string('auth.providers.users.model');
 
             /** @var (Model&Authenticatable)|null $user */
-            $user = $userModel::query()->first();
+            $user = $userModel::query()
+                ->orderBy((new $userModel)->getQualifiedKeyName())
+                ->first();
 
             if ($user instanceof Authenticatable) {
                 Auth::login($user);
