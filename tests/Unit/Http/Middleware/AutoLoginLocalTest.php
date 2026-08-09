@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Nikfedorov\AutoLogin\Http\Middleware\AutoLoginLocal;
+use Tests\Fixtures\EmailKeyUser;
 use Tests\Fixtures\User;
 
 beforeEach(function (): void {
@@ -27,6 +28,16 @@ it('automatically logs in first user', function (): void {
     // assert
     expect(Auth::check())->toBeTrue();
     expect(Auth::user()->id)->toBe($user->id);
+});
+
+it('deterministically selects the first user by model primary key', function (): void {
+    Config::set('auth.providers.users.model', EmailKeyUser::class);
+    User::factory()->create(['email' => 'z@example.com']);
+    User::factory()->create(['email' => 'a@example.com']);
+
+    $this->middleware->handle(request(), fn ($req): ResponseFactory|Response => response('OK'));
+
+    expect(Auth::id())->toBe('a@example.com');
 });
 
 it('does not override existing auth', function (): void {
